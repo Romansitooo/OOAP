@@ -1,0 +1,72 @@
+using System;
+
+class Employee
+{
+    public string Name { get; set; }
+    public string Position { get; set; }
+}
+
+class SalaryCalculator
+{
+    public double CalculateSalary(Employee employee)
+    {
+        switch (employee.Position)
+        {
+            case "ChiefEngineer":
+                return CalculateChiefEngineerSalary();
+            case "Programmer":
+                return CalculateProgrammerSalary();
+            case "SystemAdministrator":
+                return CalculateSystemAdministratorSalary();
+            default:
+                throw new ArgumentException("Invalid position");
+        }
+    }
+
+    private double CalculateChiefEngineerSalary()
+    {
+        // Обчислення заробітної платні для начальника відділу
+        return 10000;
+    }
+
+    private double CalculateProgrammerSalary()
+    {
+        // Обчислення заробітної платні для інженера-програміста
+        return 8000;
+    }
+
+    private double CalculateSystemAdministratorSalary()
+    {
+        // Обчислення заробітної платні для системного адміністратора
+        return 9000;
+    }
+}
+
+class ChiefEngineer : Employee
+{
+}
+
+class Programmer : Employee
+{
+}
+
+class SystemAdministrator : Employee
+{
+}
+
+class Program
+{
+    static void Main()
+    {
+        var calculator = new SalaryCalculator();
+
+        var chiefEngineer = new ChiefEngineer { Name = "Андрій", Position = "ChiefEngineer" };
+        var programmer = new Programmer { Name = "Анна", Position = "Programmer" };
+        var sysAdmin = new SystemAdministrator { Name = "Рома", Position = "SystemAdministrator" };
+
+        Console.WriteLine($"{chiefEngineer.Name} зарплата: {calculator.CalculateSalary(chiefEngineer)}");
+        Console.WriteLine($"{programmer.Name} зарплата: {calculator.CalculateSalary(programmer)}");
+        Console.WriteLine($"{sysAdmin.Name} зарплата: {calculator.CalculateSalary(sysAdmin)}");
+    }
+}
+
