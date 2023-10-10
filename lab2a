@@ -1,0 +1,113 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+// Клас для представлення книги
+public class Book
+{
+    public string Title { get; set; }
+    public string Author { get; set; }
+    public int Year { get; set; }
+
+    public Book(string title, string author, int year)
+    {
+        Title = title;
+        Author = author;
+        Year = year;
+    }
+}
+
+// Інтерфейс для колекції книг
+public interface IBookCollection
+{
+    void AddBook(Book book);
+    List<Book> FindBooksByAuthor(string author);
+    bool RemoveBook(Book book);
+}
+
+// Реалізація колекції книг
+public class BookCollection : IBookCollection
+{
+    private List<Book> books;
+
+    public BookCollection()
+    {
+        books = new List<Book>();
+    }
+
+    public void AddBook(Book book)
+    {
+        books.Add(book);
+    }
+
+    public List<Book> FindBooksByAuthor(string author)
+    {
+        return books.Where(book => book.Author == author).ToList();
+    }
+
+    public bool RemoveBook(Book book)
+    {
+        return books.Remove(book);
+    }
+}
+
+// Proxy для доступу до колекції книг
+public class BookCollectionProxy : IBookCollection
+{
+    private BookCollection bookCollection;
+
+    public BookCollectionProxy()
+    {
+        bookCollection = new BookCollection();
+    }
+
+    public void AddBook(Book book)
+    {
+        // Додайте код для перевірки прав доступу або інших обмежень перед додаванням книги
+        bookCollection.AddBook(book);
+    }
+
+    public List<Book> FindBooksByAuthor(string author)
+    {
+        // Додайте код для перевірки прав доступу або інших обмежень перед пошуком книг за автором
+        return bookCollection.FindBooksByAuthor(author);
+    }
+
+    public bool RemoveBook(Book book)
+    {
+        // Додайте код для перевірки прав доступу або інших обмежень перед видаленням книги
+        return bookCollection.RemoveBook(book);
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        // Створення об'єкта колекції книг через Proxy
+        IBookCollection bookCollection = new BookCollectionProxy();
+
+        // Додавання книги
+        Book book1 = new Book("Книга 1", "Автор A", 2000);
+        bookCollection.AddBook(book1);
+
+        // Пошук книг за автором
+        List<Book> booksByAuthor = bookCollection.FindBooksByAuthor("Author A");
+        Console.WriteLine("Книги автора A:");
+        foreach (var book in booksByAuthor)
+        {
+            Console.WriteLine($"Назва: {book.Title}, Автор: {book.Author}, Рік: {book.Year}");
+        }
+
+        // Видалення книги
+        bool removed = bookCollection.RemoveBook(book1);
+        if (removed)
+        {
+            Console.WriteLine("Книгу 1 успішно видалено.");
+        }
+        else
+        {
+            Console.WriteLine("Книга 1 не знайдена.");
+        }
+    }
+}
