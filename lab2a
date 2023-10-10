@@ -63,19 +63,19 @@ public class BookCollectionProxy : IBookCollection
 
     public void AddBook(Book book)
     {
-        // Додайте код для перевірки прав доступу або інших обмежень перед додаванням книги
+        // Код для перевірки прав доступу або інших обмежень перед додаванням книги
         bookCollection.AddBook(book);
     }
 
     public List<Book> FindBooksByAuthor(string author)
     {
-        // Додайте код для перевірки прав доступу або інших обмежень перед пошуком книг за автором
+        // Код для перевірки прав доступу або інших обмежень перед пошуком книг за автором
         return bookCollection.FindBooksByAuthor(author);
     }
 
     public bool RemoveBook(Book book)
     {
-        // Додайте код для перевірки прав доступу або інших обмежень перед видаленням книги
+        // Код для перевірки прав доступу або інших обмежень перед видаленням книги
         return bookCollection.RemoveBook(book);
     }
 }
