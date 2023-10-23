@@ -1,0 +1,70 @@
+using System;
+
+// Абстрактні класи для золотих та срібних виробів
+abstract class Jewelry
+{
+    public double Weight { get; set; }
+    public int Complexity { get; set; }
+
+    public abstract double GetPrice();
+}
+
+class GoldJewelry : Jewelry
+{
+    public override double GetPrice()
+    {
+        // Розрахунок вартості для золотих виробів
+        // Можливо, ви можете використовувати специфічні формули для золотих виробів
+        return Weight * Complexity * 100; 
+    }
+}
+
+class SilverJewelry : Jewelry
+{
+    public override double GetPrice()
+    {
+        // Розрахунок вартості для срібних виробів
+        // Можливо, ви можете використовувати специфічні формули для срібних виробів
+        return Weight * Complexity * 50; 
+    }
+}
+
+// Абстрактна фабрика для створення виробів
+abstract class JewelryFactory
+{
+    public abstract Jewelry CreateJewelry(double weight, int complexity);
+}
+
+class GoldJewelryFactory : JewelryFactory
+{
+    public override Jewelry CreateJewelry(double weight, int complexity)
+    {
+        return new GoldJewelry { Weight = weight, Complexity = complexity };
+    }
+}
+
+class SilverJewelryFactory : JewelryFactory
+{
+    public override Jewelry CreateJewelry(double weight, int complexity)
+    {
+        return new SilverJewelry { Weight = weight, Complexity = complexity };
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // Створення фабрик для золотих та срібних виробів
+        JewelryFactory goldFactory = new GoldJewelryFactory();
+        JewelryFactory silverFactory = new SilverJewelryFactory();
+
+        // Створення конкретних виробів
+        Jewelry goldRing = goldFactory.CreateJewelry(0.5, 3);
+        Jewelry silverEarrings = silverFactory.CreateJewelry(0.2, 2);
+
+        // Вивід вартості виробів
+        Console.WriteLine("Золоте кільце вартістю: $" + goldRing.GetPrice());
+        Console.WriteLine("Срібні сережки вартістю: $" + silverEarrings.GetPrice());
+    }
+}
