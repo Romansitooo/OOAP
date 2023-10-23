@@ -1,0 +1,100 @@
+using System;
+using System.Collections.Generic;
+
+// Класи для представлення солодощів
+class Candy
+{
+    public string Name { get; set; }
+    public double Weight { get; set; }
+    public double PricePerKg { get; set; }
+
+    public double CalculateCost()
+    {
+        return Weight * PricePerKg;
+    }
+}
+
+// Клас для представлення подарункового набору
+class GiftSet
+{
+    public string Name { get; set; }
+    public List<Candy> Candies { get; set; } = new List<Candy>();
+}
+
+// Будівельник для пакування подарункового набору
+interface IGiftSetBuilder
+{
+    void SetName();
+    void AddCandies();
+    GiftSet GetGiftSet();
+}
+
+class EconomicGiftSetBuilder : IGiftSetBuilder
+{
+    private GiftSet giftSet = new GiftSet();
+    private double pricePerKg;
+
+    public EconomicGiftSetBuilder(double pricePerKg)
+    {
+        this.pricePerKg = pricePerKg;
+    }
+
+    public void SetName()
+    {
+        giftSet.Name = "Ласунка";
+    }
+
+    public void AddCandies()
+    {
+        giftSet.Candies.Add(new Candy { Name = "Льодяники", Weight = 100, PricePerKg = pricePerKg });
+        giftSet.Candies.Add(new Candy { Name = "Шоколадні цукерки", Weight = 200, PricePerKg = pricePerKg });
+        giftSet.Candies.Add(new Candy { Name = "Вафлі", Weight = 150, PricePerKg = pricePerKg });
+        giftSet.Candies.Add(new Candy { Name = "Драже", Weight = 120, PricePerKg = pricePerKg });
+    }
+
+    public GiftSet GetGiftSet()
+    {
+        return giftSet;
+    }
+}
+
+// Додайте аналогічні класи для інших типів подарункових наборів
+
+// Директор, який будує подарункові набори
+class GiftSetDirector
+{
+    private IGiftSetBuilder builder;
+
+    public GiftSetDirector(IGiftSetBuilder builder)
+    {
+        this.builder = builder;
+    }
+
+    public GiftSet ConstructGiftSet()
+    {
+        builder.SetName();
+        builder.AddCandies();
+        return builder.GetGiftSet();
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        double pricePerKg = 15.0; // Вартість за кілограм солодощів
+
+        IGiftSetBuilder builder = new EconomicGiftSetBuilder(pricePerKg);
+        GiftSetDirector director = new GiftSetDirector(builder);
+
+        GiftSet giftSet = director.ConstructGiftSet();
+
+        Console.WriteLine("Назва: " + giftSet.Name);
+        Console.WriteLine("Загальна вага: " + giftSet.Candies.Sum(c => c.Weight) + " г");
+        Console.WriteLine("Склад:");
+        foreach (var candy in giftSet.Candies)
+        {
+            Console.WriteLine($"{candy.Name}: Вага - {candy.Weight} г, Ціна - ${candy.CalculateCost():F2}");
+        }
+    }
+}
