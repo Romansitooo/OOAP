@@ -14,7 +14,6 @@ class GoldJewelry : Jewelry
     public override double GetPrice()
     {
         // Розрахунок вартості для золотих виробів
-        // Можливо, ви можете використовувати специфічні формули для золотих виробів
         return Weight * Complexity * 100; 
     }
 }
@@ -24,7 +23,6 @@ class SilverJewelry : Jewelry
     public override double GetPrice()
     {
         // Розрахунок вартості для срібних виробів
-        // Можливо, ви можете використовувати специфічні формули для срібних виробів
         return Weight * Complexity * 50; 
     }
 }
