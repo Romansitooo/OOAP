@@ -1,72 +1,74 @@
 using System;
+using System.Collections.Generic;
 
-class Employee
+// Інтерфейс, що визначає методи для обчислення заробітної платні
+public interface ISalaryCalculator
 {
-    public string Name { get; set; }
-    public string Position { get; set; }
+    double CalculateSalary(string position);
 }
 
-class SalaryCalculator
+// Клас, який реалізує обчислення заробітної платні
+public class SalaryCalculator : ISalaryCalculator
 {
-    public double CalculateSalary(Employee employee)
+    public double CalculateSalary(string position)
     {
-        switch (employee.Position)
+        switch (position)
         {
-            case "ChiefEngineer":
-                return CalculateChiefEngineerSalary();
-            case "Programmer":
-                return CalculateProgrammerSalary();
-            case "SystemAdministrator":
-                return CalculateSystemAdministratorSalary();
+            case "Головний інженер":
+                return 10000.0;
+            case "Провідний інженер":
+                return 8000.0;
+            case "Інженер-програміст":
+                return 6000.0;
+            case "Системний адміністратор":
+                return 7000.0;
             default:
                 throw new ArgumentException("Invalid position");
         }
     }
-
-    private double CalculateChiefEngineerSalary()
-    {
-        // Обчислення заробітної платні для начальника відділу
-        return 10000;
-    }
-
-    private double CalculateProgrammerSalary()
-    {
-        // Обчислення заробітної платні для інженера-програміста
-        return 8000;
-    }
-
-    private double CalculateSystemAdministratorSalary()
-    {
-        // Обчислення заробітної платні для системного адміністратора
-        return 9000;
-    }
 }
 
-class ChiefEngineer : Employee
+// Клас для представлення працівника
+public class Employee
 {
-}
+    public string Name { get; set; }
+    public string Position { get; set; }
 
-class Programmer : Employee
-{
-}
+    public Employee(string name, string position)
+    {
+        Name = name;
+        Position = position;
+    }
 
-class SystemAdministrator : Employee
-{
+    public void DisplayInformation()
+    {
+        Console.WriteLine($"Ім'я: {Name}, позиція: {Position}");
+    }
 }
 
 class Program
 {
     static void Main()
     {
-        var calculator = new SalaryCalculator();
+        // Створення екземпляра обчислювача заробітної платні
+        ISalaryCalculator salaryCalculator = new SalaryCalculator();
 
-        var chiefEngineer = new ChiefEngineer { Name = "Андрій", Position = "ChiefEngineer" };
-        var programmer = new Programmer { Name = "Анна", Position = "Programmer" };
-        var sysAdmin = new SystemAdministrator { Name = "Рома", Position = "SystemAdministrator" };
+        // Список працівників
+        var employees = new List<Employee>
+        {
+            new Employee("Рома", "Головний інженер"),
+            new Employee("Антон", "Провідний інженер"),
+            new Employee("Аня", "Інженер-програміст"),
+            new Employee("Назар", "Системний адміністратор")
+        };
 
-        Console.WriteLine($"{chiefEngineer.Name} зарплата: {calculator.CalculateSalary(chiefEngineer)}");
-        Console.WriteLine($"{programmer.Name} зарплата: {calculator.CalculateSalary(programmer)}");
-        Console.WriteLine($"{sysAdmin.Name} зарплата: {calculator.CalculateSalary(sysAdmin)}");
+        // Виведення інформації про працівників та їх заробітну платню
+        foreach (var employee in employees)
+        {
+            employee.DisplayInformation();
+            double salary = salaryCalculator.CalculateSalary(employee.Position);
+            Console.WriteLine($"Заробітня плата: {salary:C}");
+            Console.WriteLine();
+        }
     }
 }
-
