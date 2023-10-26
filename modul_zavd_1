@@ -1,0 +1,79 @@
+using System;
+
+// Інтерфейс для обчислення заробітної платні
+public interface ISalaryCalculator
+{
+    double CalculateSalary();
+}
+
+// Клас для начальника відділу
+public class DepartmentHead : ISalaryCalculator
+{
+    public double CalculateSalary()
+    {
+        // Обчислення заробітної платні для начальника відділу
+        return 10000.0;
+    }
+}
+
+// Клас для головного інженера
+public class ChiefEngineer : ISalaryCalculator
+{
+    public double CalculateSalary()
+    {
+        // Обчислення заробітної платні для головного інженера
+        return 8000.0;
+    }
+}
+
+// Клас для інженера-програміста
+public class SoftwareEngineer : ISalaryCalculator
+{
+    public double CalculateSalary()
+    {
+        // Обчислення заробітної платні для інженера-програміста
+        return 6000.0;
+    }
+}
+
+// Клас для системного адміністратора
+public class SystemAdministrator : ISalaryCalculator
+{
+    public double CalculateSalary()
+    {
+        // Обчислення заробітної платні для системного адміністратора
+        return 7000.0;
+    }
+}
+
+// Клас, який використовує делегування для обчислення заробітної платні
+public class EmployeeInfo
+{
+    private ISalaryCalculator calculator;
+
+    public EmployeeInfo(ISalaryCalculator calculator)
+    {
+        this.calculator = calculator;
+    }
+
+    public double GetSalary()
+    {
+        return calculator.CalculateSalary();
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        EmployeeInfo head = new EmployeeInfo(new DepartmentHead());
+        EmployeeInfo engineer = new EmployeeInfo(new ChiefEngineer());
+        EmployeeInfo programmer = new EmployeeInfo(new SoftwareEngineer());
+        EmployeeInfo admin = new EmployeeInfo(new SystemAdministrator());
+
+        Console.WriteLine("Зарплата начальника відділу: $" + head.GetSalary());
+        Console.WriteLine("Зарплата головного інженера: $" + engineer.GetSalary());
+        Console.WriteLine("Зарплата Інженера-програміста: $" + programmer.GetSalary());
+        Console.WriteLine("Зарплата системного адміністратора: $" + admin.GetSalary());
+    }
+}
